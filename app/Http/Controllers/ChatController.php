@@ -11,15 +11,22 @@ class ChatController extends Controller
     {
         $message = $request->input('message');
 
-       $response = Http::post(
-           "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" . env('GEMINI_API_KEY'),    [
-               "contents" => [        
+
+        $context = "
+        User name: 'hossam
+        Message: {$message}
+        ";
+        
+        $response = Http::post(
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" . env('GEMINI_API_KEY'),
             [
-                "parts" => [
-                    ["text" => $message]
+                "contents" => [
+                    [
+                        "parts" => [
+                            ["text" => $context]
+                        ]
+                    ]
                 ]
-            ]
-            ]
             ]
         );
         
